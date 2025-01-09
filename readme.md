@@ -11,7 +11,7 @@
     ```bash
     npm i
     ```
-2. 修改 index.js 檔案中的帳號密碼
+2. 修改 config.js 檔案中的帳號密碼
     ```javascript
         const CONFIG = {
             // 預設登入網址, 無須調整

@@ -1,7 +1,7 @@
 const {chromium} = require('playwright');  // 你可以選擇使用 chrome 或 firefox
 const fs = require('fs');
 const cron = require('node-cron');
-const {EXECUTE_STRATEGY, EXECUTE_STATUS, CONFIG} = require('./CONFIG');
+const {EXECUTE_STRATEGY, EXECUTE_STATUS, CONFIG} = require('./config');
 let currentStatus;
 
 // 取得今天的日期，用來判斷今天是否已經打卡

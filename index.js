@@ -1,11 +1,12 @@
 const {chromium} = require('playwright');  // 你可以選擇使用 chrome 或 firefox
 const fs = require('fs');
 const cron = require('node-cron');
+const moment = require("moment-timezone");
 const {EXECUTE_STRATEGY, EXECUTE_STATUS, CONFIG} = require('./config');
 let currentStatus;
 
 // 取得今天的日期，用來判斷今天是否已經打卡
-const today = new Date().toISOString().split('T')[0];  // 例如 "2025-01-02"
+const today = moment().tz(CONFIG.timezone).format("YYYY-MM-DD")
 
 async function job() {
     console.log(`today ${today}`);
@@ -24,7 +25,7 @@ async function job() {
     const lastPunchDate = fs.readFileSync(CONFIG.recordFile, 'utf8').trim();
     const isProcessing = currentStatus === EXECUTE_STATUS.PROCESSING;
 
-    if (isNotWithinTimeRange) {
+    if (isNotWithinTimeRange(CONFIG)) {
         console.log('不在打卡時間範圍內，跳過打卡。');
         return;
     }
@@ -94,14 +95,13 @@ function writeLog() {
 }
 
 function isNotWithinTimeRange(config) {
-    const now = new Date(); // 取得當前時間
-    const currentHour = now.getHours(); // 取得目前的小時（0-23）
+    const currentHour = moment().tz(CONFIG.timezone).format("HH")
 
     if (config.executeStrategy === EXECUTE_STRATEGY.CHECK_IN) {
         // 判斷是否在 9 ~ 14 點之間
         console.log("判斷是否在 9 ~ 12 點之間")
-        return !currentHour >= 9 && currentHour < 12;
-    } else if (config.executeStrategy === EXECUTE_STRATEGY.CHECK_OUT) {
+        return !currentHour >= 9 && currentHour < 13;
+    } else if (JSON.stringify(config.executeStrategy) === JSON.stringify(EXECUTE_STRATEGY.CHECK_OUT)) {
         // 判斷是否在 18 ~ 24 點之間
         console.log("判斷是否在 18 ~ 24 點之間")
         return !currentHour >= 18 && currentHour < 24;

@@ -29,6 +29,7 @@ const CONFIG = {
     latitude: 25.0478,
     longitude: 121.5319,
     recordFile: 'time.txt',
+    timezone: 'Asia/Taipei',
     executePeriod: EXECUTE_PER_TEN_MINUTE,
     executeStrategy: EXECUTE_STRATEGY.CHECK_IN,
 }
